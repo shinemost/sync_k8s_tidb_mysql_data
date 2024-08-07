@@ -1,0 +1,9 @@
+tidb:
+  url: jdbc:mysql://advanced-tidb-tidb.tidb-cluster:4000/yifu_produce
+  database: xxxx
+  username: root
+  password: Mesgxgk@12345
+minio:
+  url: http://172.25.11.142:9000
+  bucket: test_kubernetes_tidb_data
+  csvName: data
