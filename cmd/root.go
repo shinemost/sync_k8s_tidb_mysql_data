@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"sync_k8s_tidb_mysql_data/entity"
 	"sync_k8s_tidb_mysql_data/service"
 
@@ -15,6 +16,7 @@ import (
 )
 
 var Config entity.Config
+var clearTableName string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -27,12 +29,17 @@ var rootCmd = &cobra.Command{
 }
 
 var clearCmd = &cobra.Command{
-	Use:   "clear",
+	Use:   "clear table1 table2 …… [optional] empty args says all",
 	Short: "清理数据",
 	Long:  `清理数据库数据`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("开始清理，请稍后！")
-		err := service.Clear()
+		if len(args) == 0 {
+			log.Println("开始清理所有表，请稍后！")
+			args = append(args, "proudce", "produce_in", "produce_param")
+		} else {
+			log.Printf("开始清理【%s】，请稍后！", strings.Join(args, ","))
+		}
+		err := service.Clear(args)
 		if err != nil {
 			log.Fatalf("清理报错！{}", err)
 			return
@@ -82,27 +89,28 @@ func init() {
 	cobra.OnInitialize(initConfig)
 }
 
-// initConfig reads in config file and ENV variables if set.
+// initConfig reads in util file and ENV variables if set.
 func initConfig() {
 
 	// Find home directory.
-	home, err := os.UserHomeDir()
-	cobra.CheckErr(err)
+	//home, err := os.UserHomeDir()
+	//cobra.CheckErr(err)
 
-	// Search config in home directory with name ".sync_k8s_tidb_mysql_data" (without extension).
-	viper.AddConfigPath(home)
+	// Search util in home directory with name ".sync_k8s_tidb_mysql_data" (without extension).
+	viper.AddConfigPath(".")
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("config")
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err != nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	// If a util file is found, read it in.
+	if err := viper.ReadInConfig(); err == nil {
+		fmt.Fprintln(os.Stderr, "Using util file:", viper.ConfigFileUsed())
 	}
 
 	// 将配置文件映射到结构体
 	if err := viper.Unmarshal(&Config); err != nil {
 		log.Fatalf("Unable to decode into struct: %v", err)
 	}
+
 }
