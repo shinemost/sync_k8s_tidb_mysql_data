@@ -14,7 +14,7 @@ func CreateDB() *gorm.DB {
 	config := cmd.Config.Tidb
 
 	dsn := fmt.Sprintf(
-		"s%:s%@tcp(s%:d%)/s%?charset=utf8mb4",
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4",
 		config.Username,
 		config.Password,
 		config.Host,

@@ -16,7 +16,6 @@ import (
 )
 
 var Config entity.Config
-var clearTableName string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -35,7 +34,7 @@ var clearCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			log.Println("开始清理所有表，请稍后！")
-			args = append(args, "proudce", "produce_in", "produce_param")
+			args = append(args, "produce", "produce_in", "produce_param")
 		} else {
 			log.Printf("开始清理【%s】，请稍后！", strings.Join(args, ","))
 		}
@@ -54,13 +53,13 @@ var importCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			log.Println("开始导入所有表，请稍后！")
-			args = append(args, "proudce", "produce_in", "produce_param")
+			args = append(args, "produce", "produce_in", "produce_param")
 		} else {
 			log.Printf("开始导入【%s】，请稍后！", strings.Join(args, ","))
 		}
 		err := service.Insert(args)
 		if err != nil {
-			log.Fatalf("插入报错！{}", err)
+			log.Fatalf("插入报错！%v", err)
 			return
 		}
 	},
@@ -74,7 +73,7 @@ var allCmd = &cobra.Command{
 		log.Println("核弹准备中，扔……")
 		err := service.All()
 		if err != nil {
-			log.Fatalf("核弹威力太大，黑猪跑不掉，烧成黑炭了！{}", err)
+			log.Fatalf("核弹威力太大，黑猪跑不掉，烧成黑炭了！%v", err)
 			return
 		}
 	},
