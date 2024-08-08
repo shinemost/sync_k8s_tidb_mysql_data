@@ -1,7 +1,8 @@
 package entity
 
 type Tidb struct {
-	Url      string
+	Host     string
+	Port     int
 	Database string
 	Username string
 	Password string

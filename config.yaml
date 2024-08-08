@@ -1,6 +1,7 @@
 tidb:
-  url: jdbc:mysql://advanced-tidb-tidb.tidb-cluster:4000/yifu_produce
-  database: xxxx
+  host: advanced-tidb-tidb.tidb-cluster
+  port: 4000
+  database: yifu_produce
   username: root
   password: Mesgxgk@12345
 minio:

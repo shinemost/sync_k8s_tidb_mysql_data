@@ -6,13 +6,26 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
+	"sync_k8s_tidb_mysql_data/cmd"
 	"sync_k8s_tidb_mysql_data/entity"
 )
 
 func CreateDB() *gorm.DB {
-	dsn := "root:Mesgxgk@123456@tcp(10.2.65.10:30287)/yifu_produce?charset=utf8mb4"
+	config := cmd.Config.Tidb
+
+	dsn := fmt.Sprintf(
+		"s%:s%@tcp(s%:d%)/s%?charset=utf8mb4",
+		config.Username,
+		config.Password,
+		config.Host,
+		config.Port,
+		config.Database,
+	)
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger:                 logger.Default.LogMode(logger.Info),
+		SkipDefaultTransaction: true,
+		CreateBatchSize:        2000,
 	})
 	if err != nil {
 		panic(err)
@@ -40,6 +53,9 @@ func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (e
 }
 
 func insertBatchRecords(tableName string, records []interface{}) {
+	//Todo 使用tidb的driver是否会有不同
+	//ToDo 直接使用load csv的sql语句，看看支不支持
+	//https://blog.csdn.net/puss0/article/details/90411618
 	// 初始化数据库连接
 	db := CreateDB()
 
@@ -47,10 +63,10 @@ func insertBatchRecords(tableName string, records []interface{}) {
 	//tx := db.Begin()
 
 	// 每次批量插入的大小
-	batchSize := 2000
+	//db.CreateBatchSize = 2000
 
 	// 执行批量插入
-	if err := db.Model(&entity.ProduceIn{}).CreateInBatches(records, batchSize).Error; err != nil {
+	if err := db.Model(&entity.ProduceIn{}).Create(records).Error; err != nil {
 		db.Rollback()
 		log.Fatalf("批量插入记录失败: %v", err)
 	}

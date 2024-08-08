@@ -88,8 +88,6 @@ func setField(record interface{}, header []string, line []string) error {
 		switch field.Type().Kind() {
 		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 			if line[i] == "" {
-				// 设定默认值或跳过设置
-				// 示例中设定为默认值 0
 				field.SetInt(0)
 			} else {
 				val, err := strconv.ParseInt(line[i], 10, 64)
@@ -103,8 +101,6 @@ func setField(record interface{}, header []string, line []string) error {
 		case reflect.Struct:
 			if field.Type() == reflect.TypeOf(time.Time{}) {
 				if line[i] == "" {
-					// 设定默认值或跳过设置
-					// 示例中设定为当前时间
 					field.Set(reflect.ValueOf(time.Now()))
 				} else {
 					// 解析时间字符串
@@ -137,7 +133,5 @@ func toCamelCase(s string) string {
 
 // parseTime 解析时间字符串
 func parseTime(s string) (time.Time, error) {
-	// 根据实际的时间字符串格式进行解析
-	// 示例中使用 "2006/1/2 15:04:05" 这种格式
 	return time.Parse("2006/1/2 15:04:05", s)
 }
