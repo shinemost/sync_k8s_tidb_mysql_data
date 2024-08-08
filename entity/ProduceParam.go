@@ -2,9 +2,9 @@ package entity
 
 import "time"
 
-// ProuduceParam 生产工艺参数表
-type ProuduceParam struct {
-	ID                         int64     `json:"id" gorm:"id"`                                                       // ID
+// ProduceParam 生产工艺参数表
+type ProduceParam struct {
+	Id                         int64     `json:"id" gorm:"id"`                                                       // ID
 	ProduceId                  int64     `json:"produce_id" gorm:"produce_id"`                                       // 生产ID
 	ProductCode                string    `json:"product_code" gorm:"product_code"`                                   // 产品编码
 	TechnicsParamId            int64     `json:"technics_param_id" gorm:"technics_param_id"`                         // 工艺参数ID
@@ -24,6 +24,6 @@ type ProuduceParam struct {
 }
 
 // TableName 表名称
-func (*ProuduceParam) TableName() string {
+func (*ProduceParam) TableName() string {
 	return "prouduce_param"
 }

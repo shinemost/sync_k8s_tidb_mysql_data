@@ -4,7 +4,7 @@ import "time"
 
 // ProduceIn 生产产品投入表
 type ProduceIn struct {
-	ID               int64     `json:"id" gorm:"id"`                                 // 自增ID
+	Id               int64     `json:"id" gorm:"id"`                                 // 自增ID
 	ProduceId        int64     `json:"produce_id" gorm:"produce_id"`                 // 生产ID
 	ProductCode      string    `json:"product_code" gorm:"product_code"`             // 产品编码
 	ProductCount     string    `json:"product_count" gorm:"product_count"`           // 产品数量

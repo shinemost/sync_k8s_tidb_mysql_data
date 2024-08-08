@@ -41,7 +41,7 @@ var clearCmd = &cobra.Command{
 		}
 		err := service.Clear(args)
 		if err != nil {
-			log.Fatalf("清理报错！{}", err)
+			log.Fatalf("清理报错！%v", err)
 			return
 		}
 	},
@@ -52,8 +52,13 @@ var importCmd = &cobra.Command{
 	Short: "导入数据",
 	Long:  `导入数据进数据库`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("开始导入，请稍后！")
-		err := service.Insert()
+		if len(args) == 0 {
+			log.Println("开始导入所有表，请稍后！")
+			args = append(args, "proudce", "produce_in", "produce_param")
+		} else {
+			log.Printf("开始导入【%s】，请稍后！", strings.Join(args, ","))
+		}
+		err := service.Insert(args)
 		if err != nil {
 			log.Fatalf("插入报错！{}", err)
 			return

@@ -4,7 +4,7 @@ import "time"
 
 // Produce 生产表
 type Produce struct {
-	ID                  int64     `json:"id" gorm:"id"`                                       // 自增ID
+	Id                  int64     `json:"id" gorm:"id"`                                       // 自增ID
 	Code                string    `json:"code" gorm:"code"`                                   // 生产编码
 	ProduceOrderCode    string    `json:"produce_order_code" gorm:"produce_order_code"`       // 生产工单编码
 	TechnicsLineId      int64     `json:"technics_line_id" gorm:"technics_line_id"`           // 工艺ID

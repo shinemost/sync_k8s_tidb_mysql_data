@@ -10,15 +10,17 @@ var db *gorm.DB
 
 func Clear(clearTableSlices []string) error {
 	db = util.CreateDB()
-	defer db.Commit()
+	tx := db.Begin()
+	defer tx.Commit()
 
 	for _, tableName := range clearTableSlices {
-		db.Exec(fmt.Sprintf("truncate table %s", tableName))
+		tx.Exec(fmt.Sprintf("truncate table %s", tableName))
 	}
 	return nil
 }
 
-func Insert() error {
+func Insert(importTableNames []string) error {
+	util.ReadCsv(importTableNames[0])
 	return nil
 }
 
