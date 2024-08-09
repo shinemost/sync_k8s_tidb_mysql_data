@@ -5,17 +5,13 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"log"
 	"os"
 	"strings"
-	"sync_k8s_tidb_mysql_data/entity"
 	"sync_k8s_tidb_mysql_data/service"
-
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
-
-var Config entity.Config
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -43,6 +39,7 @@ var clearCmd = &cobra.Command{
 			log.Fatalf("清理报错！%v", err)
 			return
 		}
+		log.Printf("【%s】清理成功！", strings.Join(args, ","))
 	},
 }
 
@@ -59,9 +56,10 @@ var importCmd = &cobra.Command{
 		}
 		err := service.Insert(args)
 		if err != nil {
-			log.Fatalf("插入报错！%v", err)
+			log.Fatalf("导入报错！%v", err)
 			return
 		}
+		log.Printf("【%s】导入成功！", strings.Join(args, ","))
 	},
 }
 
@@ -110,11 +108,6 @@ func initConfig() {
 	// If a util file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using util file:", viper.ConfigFileUsed())
-	}
-
-	// 将配置文件映射到结构体
-	if err := viper.Unmarshal(&Config); err != nil {
-		log.Fatalf("Unable to decode into struct: %v", err)
 	}
 
 }
