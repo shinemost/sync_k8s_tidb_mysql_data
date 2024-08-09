@@ -11,7 +11,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # 复制所有的 .go 文件、config 目录和其他需要的目录到工作目录，排除 data 目录
-COPY *.go cmd/ cmd/ entity/ service/ util/ ./
+COPY . .
 
 # 构建 Go 应用程序
 RUN CGO_ENABLED=0 go build -o sync .

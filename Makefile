@@ -7,6 +7,9 @@ DOCKERFILE = Dockerfile
 build:
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) -f $(DOCKERFILE) .
 
+push:
+	docker push $(IMAGE_NAME):$(IMAGE_TAG)
+
 # 删除构建的 Docker 镜像
 clean:
 	docker rmi $(IMAGE_NAME):$(IMAGE_TAG) || true
