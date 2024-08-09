@@ -22,8 +22,4 @@
 /build
 /dist
 
-# 忽略 data 目录中的文件
-data/*
-!data/.keep
 
-# 只保留 data 目录的结构文件（如果需要）
