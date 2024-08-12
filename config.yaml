@@ -1,10 +1,10 @@
 tidb:
-  host: 10.2.65.10
-  port: 30287
+  host: advanced-tidb-tidb.tidb-cluster
+  port: 4000
   database: yifu_produce
   username: root
   password: Mesgxgk@123456
 minio:
   url: http://172.25.11.142:9000
-  bucket: test_kubernetes_tidb_data
+  bucket: sync-csv
   csvName: data

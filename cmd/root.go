@@ -13,6 +13,8 @@ import (
 	"sync_k8s_tidb_mysql_data/service"
 )
 
+var allTables = []string{"produce", "produce_in", "produce_param"}
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "sync",
@@ -30,7 +32,7 @@ var clearCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			log.Println("开始清理所有表，请稍后！")
-			args = append(args, "produce", "produce_in", "produce_param")
+			args = allTables
 		} else {
 			log.Printf("开始清理【%s】，请稍后！", strings.Join(args, ","))
 		}
@@ -50,7 +52,7 @@ var importCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			log.Println("开始导入所有表，请稍后！")
-			args = append(args, "produce", "produce_in", "produce_param")
+			args = allTables
 		} else {
 			log.Printf("开始导入【%s】，请稍后！", strings.Join(args, ","))
 		}
@@ -66,12 +68,12 @@ var importCmd = &cobra.Command{
 var allCmd = &cobra.Command{
 	Use:   "all",
 	Short: "梭哈",
-	Long:  `一把梭哈，扔个核弹`,
+	Long:  `先清数据再导入`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Println("核弹准备中，扔……")
-		err := service.All()
+		log.Printf("开始处理【%s】，请稍后！", strings.Join(allTables, ","))
+		err := service.All(allTables)
 		if err != nil {
-			log.Fatalf("核弹威力太大，黑猪跑不掉，烧成黑炭了！%v", err)
+			log.Fatalf("处理报错！%v", err)
 			return
 		}
 	},

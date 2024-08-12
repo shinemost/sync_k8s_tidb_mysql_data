@@ -107,7 +107,7 @@ func parseProduce(line []string) entity.Produce {
 		MaterielCode:        line[18],
 		MaterielName:        line[19],
 		MaterielType:        parseInt64(line[20]),
-		ProduceDate:         parseTime(line[21]),
+		ProduceDate:         parseDate(line[21]),
 		StartTime:           parseTime(line[22]),
 		EndTime:             parseTime(line[23]),
 		UserId:              parseInt64(line[24]),
@@ -213,6 +213,16 @@ func parseTime(s string) time.Time {
 	t, err := time.Parse("2006/1/2 15:04:05", s)
 	if err != nil {
 		log.Printf("解析时间失败: %v", err)
+		return time.Time{}
+	}
+	return t
+}
+
+// parseDate 解析日期字符串
+func parseDate(s string) time.Time {
+	t, err := time.Parse("2006/1/2", s)
+	if err != nil {
+		log.Printf("解析日期失败: %v", err)
 		return time.Time{}
 	}
 	return t
