@@ -4,9 +4,8 @@ WORKDIR /root/
 
 # 复制 data 目录到最终镜像
 COPY data/ data/
-COPY sync config.yaml /root/
+COPY sync  /root/
 
 RUN chmod +x sync
-RUN ls -l /root/
 
 

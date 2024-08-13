@@ -4,9 +4,8 @@ Copyright © 2024 shinemost
 package cmd
 
 import (
-	"fmt"
+	_ "embed"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"log"
 	"os"
 	"strings"
@@ -90,26 +89,21 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(clearCmd, importCmd, allCmd)
-	cobra.OnInitialize(initConfig)
+	//cobra.OnInitialize(initConfig)
 }
 
 // initConfig reads in util file and ENV variables if set.
-func initConfig() {
+/*func initConfig() {
 
-	// Find home directory.
-	//home, err := os.UserHomeDir()
-	//cobra.CheckErr(err)
-
-	// Search util in home directory with name ".sync_k8s_tidb_mysql_data" (without extension).
-	viper.AddConfigPath(".")
+	// 将嵌入的配置数据传递给 Viper
 	viper.SetConfigType("yaml")
-	viper.SetConfigName("config")
 
-	viper.AutomaticEnv() // read in environment variables that match
+	// 使用 bytes.NewReader 创建一个读取器
+	configReader := bytes.NewReader([]byte(config))
 
 	// If a util file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
+	if err := viper.ReadConfig(configReader); err == nil {
 		fmt.Fprintln(os.Stderr, "Using util file:", viper.ConfigFileUsed())
 	}
 
-}
+}*/

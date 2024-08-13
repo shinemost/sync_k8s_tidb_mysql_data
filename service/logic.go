@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"log"
 	"sync"
-	"sync_k8s_tidb_mysql_data/util"
+	"sync_k8s_tidb_mysql_data/db"
 )
 
 func Clear(clearTableSlices []string) error {
-	db := util.CreateDB()
-	session := db.NewSession()
+	engine := db.CreateDB()
+	session := engine.NewSession()
 	defer session.Close()
 	err := session.Begin()
 	if err != nil {
@@ -39,7 +39,7 @@ func Insert(importTableNames []string) error {
 		wg.Add(1)
 		go func(tName string) {
 			defer wg.Done()
-			if err := util.ReadCsv(tName); err != nil {
+			if err := readCsv(tName); err != nil {
 				errCh <- fmt.Errorf("处理表 %s 时出错: %v", tName, err)
 			}
 		}(tableName)
